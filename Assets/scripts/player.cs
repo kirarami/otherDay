@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.UI;
+using TMPro;
 
 public class player : MonoBehaviour
 {
@@ -17,10 +18,27 @@ public class player : MonoBehaviour
     public bool addOBJsIS;
     public int salasIDs;
     public int peligroP;
+
+    public bool windowsobj;
+    public int stateO;
+    public int windowsobj_selec;
+    public int windowsobj_selec1;
+    public bool useobj;
+    public bool deleteobj;
+    public GameObject windowsO;
+    public Image obj1w;
+    public Image obj2w;
+    public Image obj3w;
+    public Image useO;
+    public Image del0;
+    public TMP_Text descrip;
+    public string descrip1;
+
+
     //private new Rigidbody2D rigibody;
 
     public bool left = false;
-    public  bool right = false;
+    public bool right = false;
     bool up = false;
     bool down = false;
     public bool B111 = false;
@@ -42,37 +60,182 @@ public class player : MonoBehaviour
     public Image[] objsIMG;
     public Sprite[] objsSPR;
 
+    private float yO;
+    private float upv0;
+
+    private bool frame1;
+
+    public bool objeto01;
+    private GameObject ob;
     // Start is called before the first frame update
     void Start()
     {
         peligroP = 0;
         boton1.SetActive(false);
         //rigibody = GetComponent<Rigidbody2D>();
-        animation = GetComponent<Animator>(); 
+        animation = GetComponent<Animator>();
         states1 = 0;
         apoy = 1;
         llave = "noone";
         salasIDs = 0;
+
+        windowsobj_selec = 0;
+        stateO = 0;
+        upv0 = obj1w.transform.position.y + 30;
+        yO = obj1w.transform.position.y;
+        windowsO.SetActive(true);
+        frame1 = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(interectiveAllGame == true)
+        if (frame1 == true) {
+            windowsobj_selec = 0;
+            stateO = 0;
+            upv0 = obj1w.transform.position.y + 30;
+            yO = obj1w.transform.position.y;
+            windowsO.SetActive(false);
+            frame1 = false;
+        }
+        if (windowsobj == true)
         {
-            if (DAY == 7)
+            onT = true;
+            windowsO.SetActive(true);
+            if (stateO == 0)
             {
-
-                if (addOBJsIS == true) { GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().MSinves = true;
-                }
-                else
+                if (right == true)
                 {
-                    GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().otherID = IDlocal;
-                    GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().iniciT = true;
+                    if (windowsobj_selec < 2)
+                    {
+                        windowsobj_selec++;
+                    }
+                    else
+                    {
+                        windowsobj_selec = 0;
+                    }
+                    right = false;
+                }
+                if (left == true)
+                {
+                    if (windowsobj_selec > 0)
+                    {
+                        windowsobj_selec--;
+                    }
+                    else
+                    {
+                        windowsobj_selec = 2;
+                    }
+                    left = false;
+                }
+                if (B222 == true)
+                {
+                    B222 = false;
+                    stateO = 1;
+                }
+                switch (windowsobj_selec)
+                {
+                    case 0:
+
+                        obj1w.transform.position = new Vector3(obj1w.transform.position.x, upv0, 0);
+                        obj2w.transform.position = new Vector3(obj2w.transform.position.x, yO, 0);
+                        obj3w.transform.position = new Vector3(obj3w.transform.position.x, yO, 0);
+                        break;
+
+                    case 1:
+
+                        obj1w.transform.position = new Vector3(obj1w.transform.position.x, yO, 0);
+                        obj2w.transform.position = new Vector3(obj2w.transform.position.x, upv0, 0);
+                        obj3w.transform.position = new Vector3(obj3w.transform.position.x, yO, 0);
+                        break;
+
+                    case 2:
+
+                        obj1w.transform.position = new Vector3(obj1w.transform.position.x, yO, 0);
+                        obj2w.transform.position = new Vector3(obj2w.transform.position.x, yO, 0);
+                        obj3w.transform.position = new Vector3(obj3w.transform.position.x, upv0, 0);
+                        break;
                 }
             }
+            if (stateO == 1)
+            {
+                if (right == true)
+                {
+                    if (windowsobj_selec1 < 1)
+                    {
+                        windowsobj_selec1++;
+                    }
+                    else
+                    {
+                        windowsobj_selec1 = 0;
+                    }
+                    right = false;
+                }
+                if (left == true)
+                {
+                    if (windowsobj_selec1 > 0)
+                    {
+                        windowsobj_selec1--;
+                    }
+                    else
+                    {
+                        windowsobj_selec1 = 1;
+                    }
+                    left = false;
+                }
+                if (B222 == true)
+                {
+                    B222 = false;
+                    if (windowsobj_selec1 == 0)
+                    {
+                        useOBJSEN(windowsobj_selec);
+
+                    }
+                    else
+                    {
+                        delOBJSEN(windowsobj_selec);
+                    }
+                    stateO = 2;
+                }
+                switch (windowsobj_selec1)
+                {
+                    case 0:
+                        useO.transform.position = new Vector3(useO.transform.position.x, upv0, 0);
+                        del0.transform.position = new Vector3(del0.transform.position.x, yO, 0);
+                        break;
+                    case 1:
+                        useO.transform.position = new Vector3(useO.transform.position.x, yO, 0);
+                        del0.transform.position = new Vector3(del0.transform.position.x, upv0, 0);
+                        break;
+                }
+            }
+            obj1w.sprite = chooseSpri(0);
+            obj2w.sprite = chooseSpri(1);
+            obj3w.sprite = chooseSpri(2);
+            descrip1 = descripCHoo(windowsobj_selec);
+
+            descrip.text = descrip1;
         }
 
+        if (interectiveAllGame == true)
+        {
+           // if (DAY == 7)
+           // {
+
+                //if (addOBJsIS == true)
+               // {
+                  //  GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().MSinves = true;
+               // }
+              //  else
+               // {
+                    GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().otherID = IDlocal;
+                    GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().iniciT = true;
+                    IDlocal = "";
+                    interectiveAllGame = false;
+                    //GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().del = false;
+               // }
+       //     }
+        }
 
         if (rec1 == true)
         {
@@ -92,17 +255,17 @@ public class player : MonoBehaviour
         {
             Debug.Log("carga de B222 en inicio");
             StartCoroutine(USEB222());
-           // float timer1 = 3;
-           // timer1--;
-          //  timer1--;
-          //  timer1--;
-          //  Debug.Log("timer en :" + timer1);
-          //  if (timer1 <= 0)
-          //  {
-          //      rec2 = false;
-          //      B222 = false;
-           //     Debug.Log("carga de B222 en proceso");
-          //  }
+            // float timer1 = 3;
+            // timer1--;
+            //  timer1--;
+            //  timer1--;
+            //  Debug.Log("timer en :" + timer1);
+            //  if (timer1 <= 0)
+            //  {
+            //      rec2 = false;
+            //      B222 = false;
+            //     Debug.Log("carga de B222 en proceso");
+            //  }
         }
 
         //(FindObjectOfType<Dialoge>().GetComponent<Dialoge>().didDialogueStart == false)
@@ -160,30 +323,120 @@ public class player : MonoBehaviour
 
 
         }
-
-
     }
+    public void useOBJSEN(int i)
+    {
+        string IDlocal1 = "nada fuera de lo comun en mis ojos";
+        if (objs[i] == "cuchillo01") { IDlocal1 = "cuchillo fue usado"; }
+        if (objs[i] == "camara01") { IDlocal1 = "camara fue usada pero no paso nada mas (las fotos se guardaron en la camara)"; }
+        if (objs[i] == "hoja01") { IDlocal1 = "no es necesario decirte que no leas esto"; }
+        if (objs[i] == "bolso01") { IDlocal1 = "no pasa nada"; }
+        if (objs[i] == "hacha01") {
+            if (objeto01 == false)
+            {
+                IDlocal1 = "puedes romper cosas como madera con esto";
+            }
+            else
+            {
+                IDlocal1 = "destruiste esto";
+                Debug.Log("destruir comienzo");
+                Destroy(ob);
+                
+            }
+        }
+        interectiveAllGame = true;
+        IDlocal = IDlocal1;
+        windowsO.SetActive(false);
+        windowsobj = false;
+        //IDlocal = "";
+        objeto01 = false;
+    }
+
+    public void delOBJSEN(int i)
+    {
+        if (objs[i] == "cuchillo01") { objs[i] = ""; objsIMG[i].sprite = objsSPR[0]; }
+        if (objs[i] == "hoja01") { objs[i] = ""; objsIMG[i].sprite = objsSPR[0]; }
+        if (objs[i] == "camara01" && DAY == 7) {
+            GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().otherID = "no puedes eliminar este objeto por ahora";
+            GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().iniciT = true;
+        }
+        if (objs[i] == "bolso01") { objs[i] = ""; objsIMG[i].sprite = objsSPR[0]; }
+        if (objs[i] == "hacha01" && DAY == 7)
+        {
+            GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().otherID = "no puedes eliminar este objeto por ahora";
+            GameObject.FindGameObjectWithTag("controlD").GetComponent<controlDAY1>().iniciT = true;
+        }
+        windowsO.SetActive(false);
+        windowsobj = false;
+        onT = false;
+    }
+
+    public string descripCHoo(int i)
+    {
+        string des = "??????";
+        if (objs[i] == "cuchillo01") { des = "un chuchillo.... raro encontrarlo por aqui verdad ¿que pretendes?"; }
+        if (objs[i] == "camara01") { des = "grabar y tomar fotos es fantastico ¿verdad?"; }
+        if (objs[i] == "hoja01") { des = "una hoja de papel aparentemente normal"; }
+        if (objs[i] == "bolso01") { des = "objeto que sirve para guardar cosas"; }
+        if (objs[i] == "hacha01") { des = "objeto que se usa para romper cosas como madera y metal"; }
+        return des;
+    }
+
+    public Sprite chooseSpri(int i)
+    {
+        int i1 = 0;
+        if (objs[i] != "noone")
+        {
+            switch (i)
+            {
+                case 0:
+                    if (objs[0] == "cuchillo01") { i1 = 1; }
+                    if (objs[0] == "hoja01") { i1 = 2; }
+                    if (objs[0] == "camara01") { i1 = 3; }
+                    if (objs[0] == "bolso01") { i1 = 4; }
+                    if (objs[0] == "hacha01") { i1 = 5; }
+                    break;
+                case 1:
+                    if (objs[1] == "cuchillo01") { i1 = 1; }
+                    if (objs[1] == "hoja01") { i1 = 2; }
+                    if (objs[1] == "camara01") { i1 = 3; }
+                    if (objs[1] == "bolso01") { i1 = 4; }
+                    if (objs[1] == "hacha01") { i1 = 5; }
+                    break;
+                case 2:
+                    if (objs[2] == "cuchillo01") { i1 = 1; }
+                    if (objs[2] == "hoja01") { i1 = 2; }
+                    if (objs[2] == "camara01") { i1 = 3; }
+                    if (objs[2] == "bolso01") { i1 = 4; }
+                    if (objs[2] == "hacha01") { i1 = 5; }
+                    break;
+
+            }
+        }
+        return objsSPR[i1];
+    }
+
     public void CmovL()
     {
-            left = true;
-            apoy = 1;
+        left = true;
+        apoy = 1;
     }
     public void UPmovL()
     {
-            left = false;
-            states1 = 0;
+        left = false;
+        states1 = 0;
 
     }
     public void CmovR()
     {
-            right = true;
-            apoy = 1;
+        right = true;
+        apoy = 1;
     }
     public void UPmovR()
     {
         right = false;
         states1 = 0;
- 
+
     }
     public void CmovU()
     {
@@ -247,9 +500,9 @@ public class player : MonoBehaviour
         {
             B222 = false;
         }
-       //     rec2 = true;
+        //     rec2 = true;
         //    Debug.Log("B222");
-       // }
+        // }
     }
 
     //seccion de objetos en el juego y llaves
@@ -258,7 +511,7 @@ public class player : MonoBehaviour
         bool a1 = false;
         for (int i = 0; i < objs.Length; i++)
         {
-            if(objs[i] == obj)
+            if (objs[i] == obj)
             {
                 a1 = true;
                 break;
@@ -275,7 +528,7 @@ public class player : MonoBehaviour
             {
                 objs[i] = obj;
                 addOBJsIS = true;
-                interectiveAllGame = true;
+                //interectiveAllGame = true;
                 break;
             }
             else
@@ -305,7 +558,7 @@ public class player : MonoBehaviour
             }
         }
     }
-    
+
     //no usables fuera de este script 
     private int numberItem(string b)
     {
@@ -333,6 +586,12 @@ public class player : MonoBehaviour
 
             case "camara01":
                 number = 3;
+                break;
+            case "bolso01":
+                number = 4;
+                break;
+            case "hacha01":
+                number = 5;
                 break;
 
         }
@@ -365,6 +624,38 @@ public class player : MonoBehaviour
         yield return new WaitForSeconds(1);
 
     }
+
+    /*
+    public bool windowsobj;
+    public int stateO;
+    public int windowsobj_selec;
+    public int windowsobj_selec1;
+    public bool useobj;
+    public bool deleteobj;
+    public Image obj1w;
+    public Image obj2w;
+    public Image obj3w;
+    public Image useO;
+    public Image del0;
+    public Text descrip;
+    */
+    public void openwindoObj()
+    {
+        if(windowsobj == false)
+        {
+            windowsobj = true;
+        }
+        else
+        {
+            windowsO.SetActive(false);
+            windowsobj = false;
+            onT = false;
+        }
+        stateO = 0;
+        windowsobj_selec = 0;
+        windowsobj_selec1 = 0;
+
+    }
     public void OnCollisionEnter2D(Collision2D collision)
     {
         //move = collision.gameObject.GetComponent<Dialoge>().didDialogueStart;
@@ -374,6 +665,32 @@ public class player : MonoBehaviour
     {
         //rigibody.MovePosition(transform.position += movimiento * velocidad * Time.fixedDeltaTime);
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("madDoorT"))
+        {
+            objeto01 = false;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("madDoorT"))
+        {
+            objeto01 = true;
+            ob = other.gameObject;
+        }
+       // if (actionOb == true && other.CompareTag("madDoorT"))
+        //{
+        //    Destroy(other);
+       //     Debug.Log("destruir otro objeto");
+      //  }
+    }
+   
 }
 
 

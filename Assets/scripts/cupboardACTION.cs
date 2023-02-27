@@ -48,6 +48,7 @@ public class cupboardACTION : MonoBehaviour
             {
                 Debug.Log("oculto");
                 state = false;
+                cinemachinemovCamera.instance.moverCamara(1, 2, 0.2f);
                 a02.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1,0);
                 FindObjectOfType<player>().GetComponent<player>().B222use = false;
                 FindObjectOfType<player>().GetComponent<player>().B222 = false;

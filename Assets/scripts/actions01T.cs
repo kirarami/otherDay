@@ -25,9 +25,12 @@ public class actions01T : MonoBehaviour
         switch (g)
         {
             case "anim_Sprite_choose1":
-                for(int i = 0; i < OBJanimS.Length; i++)
+                
+                for (int i = 0; i < OBJanimS.Length; i++)
                 {
+                    
                     OBJanimS[i].GetComponent<Dialoge>().action01 = 1;
+                    
                 }
                 break;
 

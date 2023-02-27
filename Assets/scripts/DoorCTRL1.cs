@@ -21,6 +21,7 @@ public class DoorCTRL1 : MonoBehaviour
     public int inici0;
     public bool hacept0;
     public bool needLlave;
+    public bool cerradoD;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,7 @@ public class DoorCTRL1 : MonoBehaviour
         a02 = GameObject.FindGameObjectWithTag("player").GetComponent<player>();
         a10 = GameObject.FindGameObjectWithTag("CTRLsalas").GetComponent<controlSCTPPL>();
         inici0 = 0;
+        cerradoD = false;
         //hacept0 = true;
 
     }
@@ -60,23 +62,31 @@ public class DoorCTRL1 : MonoBehaviour
 
             }
 
-
             if (enter == true && state == false && FindObjectOfType<player>().GetComponent<player>().B222 == true && hacept0 == false && needLlave == true)
             {
                 //en donde esta llaves hay que crear una variable para ponerla ahi y que se escoja desde afuera
-                if (a02.llave == llaveOpen)
+                if (!cerradoD)
                 {
-                    Debug.Log("puerta principal abierta");
-                    a02.llave = "noone";
-                    state = true;
-                    StartCoroutine(USEhacep0());
-                    needLlave = false;
-                    FindObjectOfType<player>().GetComponent<player>().B222use = false;
+                    if (a02.llave == llaveOpen)
+                    {
+                        Debug.Log("puerta principal abierta");
+                        a02.llave = "noone";
+                        state = true;
+                        StartCoroutine(USEhacep0());
+                        needLlave = false;
+                        FindObjectOfType<player>().GetComponent<player>().B222use = false;
+                    }
+                    else
+                    {
+                        FindObjectOfType<player>().GetComponent<player>().interectiveAllGame = true;
+                        FindObjectOfType<player>().GetComponent<player>().IDlocal = "closeDoor";
+                        FindObjectOfType<player>().GetComponent<player>().B222use = false;
+                    }
                 }
                 else
                 {
                     FindObjectOfType<player>().GetComponent<player>().interectiveAllGame = true;
-                    FindObjectOfType<player>().GetComponent<player>().IDlocal = "closeDoor";
+                    FindObjectOfType<player>().GetComponent<player>().IDlocal = "busca algo para romper la madera";
                     FindObjectOfType<player>().GetComponent<player>().B222use = false;
                 }
 
@@ -84,13 +94,21 @@ public class DoorCTRL1 : MonoBehaviour
 
             if (enter == true && state == true && FindObjectOfType<player>().GetComponent<player>().B222 == true && hacept0 == true && needLlave == false)
             {
-                Debug.Log("Rsalas en proceso");
-                //poner el locate! que es a donde quieres ir  y el id de la puerta donde saldras
-                a10.Rsalas(locate, IDDoor);
-                inici0 = 0;
-                enter = false;
-                //FindObjectOfType<player>().GetComponent<player>().B222 = false;
-
+                if (cerradoD == false)
+                {
+                    Debug.Log("Rsalas en proceso");
+                    //poner el locate! que es a donde quieres ir  y el id de la puerta donde saldras
+                    a10.Rsalas(locate, IDDoor);
+                    inici0 = 0;
+                    enter = false;
+                    //FindObjectOfType<player>().GetComponent<player>().B222 = false;
+                }
+                else
+                {
+                    FindObjectOfType<player>().GetComponent<player>().interectiveAllGame = true;
+                    FindObjectOfType<player>().GetComponent<player>().IDlocal = "busca algo para romper la madera";
+                    FindObjectOfType<player>().GetComponent<player>().B222use = false;
+                }
             }
             //else if (enter == true && state == true && FindObjectOfType<player>().GetComponent<player>().B222 == true && hacept0 == true && needLlave == false)
         }
@@ -105,11 +123,15 @@ public class DoorCTRL1 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.CompareTag("madDoorT"))
+        {
+            cerradoD = true;
+        }
+
         if (collision.gameObject.CompareTag("player"))
         {
             enter = true;
         }
-
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -118,5 +140,9 @@ public class DoorCTRL1 : MonoBehaviour
             enter = false;
         }
 
+        if (collision.gameObject.CompareTag("madDoorT"))
+        {
+            cerradoD = false;
+        }
     }
 }

@@ -24,6 +24,7 @@ public class enemy01 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (FindObjectOfType<activateMOster2>().GetComponent<activateMOster2>().face > 0) { destruir = true; } 
         if (casado == true) { estate = 4; }
         if(destruir == true)
         {

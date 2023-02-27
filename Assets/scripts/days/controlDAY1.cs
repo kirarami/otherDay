@@ -22,6 +22,9 @@ public class controlDAY1 : MonoBehaviour
     public bool xd;
     public int contador;
 
+    public bool gameFIN7;
+    public GameObject fin7;
+
     //other
     public bool iniciEnemy01;
     public GameObject pared01;
@@ -34,13 +37,17 @@ public class controlDAY1 : MonoBehaviour
     {
         //enemyScr01 = GameObject.FindGameObjectWithTag("enemy").GetComponent<controlEnemy01>();
         imageT.SetActive(false);
+
         otherID = "";
         del = false;
+        
         //camara = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<cameraCTRL01>();
         line = 0;
         xd = true;
         contador = -1;
         pared01.SetActive(false);
+        fin7.SetActive(false);
+        gameFIN7 = false;
     }
 
     // Update is called once per frame
@@ -48,7 +55,7 @@ public class controlDAY1 : MonoBehaviour
     {
         if(FindObjectOfType<player>().GetComponent<player>().salasIDs == 2)
         {
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<cameraCTRL01>().maximo = new Vector2(217,0);
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<cameraCTRL01>().maximo = new Vector2(217,0); //normal es 4 (regresarlo luego de hacer cambios)
             iniciTSala = true;
             if(iniciTSala == true)
             {
@@ -145,27 +152,33 @@ public class controlDAY1 : MonoBehaviour
         }
         if (MSinves == true)
         {
-            Debug.Log("iniciando: MScomplete");
+            //Debug.Log("iniciando: MScomplete");
             MScomplete();
             MSinves = false;
         }
+
         if (iniciT == true)
         {
             otherIDGame(otherID);
             textForGame();
             FindObjectOfType<player>().GetComponent<player>().B222 = false;
             FindObjectOfType<player>().GetComponent<player>().onT = true;
-            if(del == false)
-            {
+            if (del == false)
+           {
                 StartCoroutine(showLine());
-            }
+           }
+           else
+           {
+                 Debug.Log("ERROR");
+           }
             StartCoroutine(dels());
         }
 
-       // if (iniciT == true && FindObjectOfType<player>().GetComponent<player>().B222 == true && textT.text == stringT && del == true)
-        //{
-          
-      // }
+        if (gameFIN7 == true)
+        {
+            fin7.SetActive(true);
+        }
+
     }
 
     public void MScomplete()
@@ -174,18 +187,18 @@ public class controlDAY1 : MonoBehaviour
         {
             if (FindObjectOfType<player>().GetComponent<player>().objs[i] == "camara01")
             {
-                FindObjectOfType<player>().GetComponent<player>().interectiveAllGame = false;
+                //FindObjectOfType<player>().GetComponent<player>().interectiveAllGame = false;
                 FindObjectOfType<player>().GetComponent<player>().MS1 = true;
                 MSinves = false;
                 break;
             }
             else
             {
-                Debug.Log("objeto encontrado: mision completa");
+              ///  Debug.Log("objeto encontrado: mision completa");
                 MSinves = false;
             }
         }
-        Debug.Log("MS completado");
+        //Debug.Log("MS completado");
     }
     public void otherIDGame(string otherIDs)
     {
@@ -193,6 +206,9 @@ public class controlDAY1 : MonoBehaviour
         {
             case "closeDoor":
                 stringT = "necesitas una llave";
+                break;
+            default:
+                stringT = otherIDs;
                 break;
         }
     }
@@ -206,12 +222,11 @@ public class controlDAY1 : MonoBehaviour
     private IEnumerator showLine()
     {
             textT.text = string.Empty;
-
             foreach (char ch in stringT)
             {
-                textT.text += ch;
                 del = true;
-                yield return new WaitForSeconds(0.05f);
+                textT.text += ch;
+                yield return new WaitForSeconds(0.01f);
             }
 
     }
@@ -240,8 +255,10 @@ public class controlDAY1 : MonoBehaviour
         Debug.Log("dels(activado)");
         FindObjectOfType<player>().GetComponent<player>().B222 = false;
         FindObjectOfType<player>().GetComponent<player>().onT = false;
-        FindObjectOfType<player>().GetComponent<player>().IDlocal = "";
-        FindObjectOfType<player>().GetComponent<player>().interectiveAllGame = false;
+        //FindObjectOfType<player>().GetComponent<player>().IDlocal = "";
+        //FindObjectOfType<player>().GetComponent<player>().interectiveAllGame = false;
+        otherID = "";
+        //stringT = "";
         imageT.SetActive(false);
         iniciT = false;
         del = false;

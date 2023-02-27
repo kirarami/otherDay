@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Animations;
+using UnityEngine.Rendering.Universal;
 
 public class Dialoge : MonoBehaviour
 {
@@ -188,6 +189,17 @@ public class Dialoge : MonoBehaviour
                 animation01.SetFloat("ani1_01", a);
                 StartCoroutine(activate1(5.9f, objApo01));
                 FindObjectOfType<player>().GetComponent<player>().onT = true;
+
+                GameObject i;
+                GameObject[] i1;
+                i = GameObject.FindGameObjectWithTag("uniLight01");
+                i1 = GameObject.FindGameObjectsWithTag("Light01");
+                if (i){ i.GetComponent<Light2D>().intensity = 1; }
+
+                for(int h = 0;h < i1.Length; h++)
+                {
+                   i1[h].SetActive(false);
+                }
                 break;
         }
     }

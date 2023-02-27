@@ -12,6 +12,11 @@ TagManager:
   - controlD
   - enemy
   - controlEne
+  - dominante01
+  - uniLight01
+  - Light01
+  - carga
+  - madDoorT
   layers:
   - Default
   - TransparentFX
@@ -54,4 +59,7 @@ TagManager:
     locked: 0
   - name: superior1
     uniqueID: 625716839
+    locked: 0
+  - name: superior3
+    uniqueID: 4154414607
     locked: 0

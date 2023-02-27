@@ -8,6 +8,9 @@ public class animationCtr0 : MonoBehaviour
     private float choI002;
     private bool apo001;
     private Animator _animator;
+    public GameObject vent;
+    public bool creditos;
+    public GameObject creditoss;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +18,8 @@ public class animationCtr0 : MonoBehaviour
         choI002 = Random.Range(0f, 20f);
         apo001 = false;
         _animator = GetComponent<Animator>();
+        creditos = false;
+        creditoss.SetActive(false);
     }
 
     // Update is called once per frame
@@ -37,5 +42,18 @@ public class animationCtr0 : MonoBehaviour
             choI001 = Random.Range(0f, 200f);
             choI002 = Random.Range(0f, 20f);
         }
+        if (!creditos)
+        {
+            vent.SetActive(true);
+            this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            creditoss.SetActive(false);
+        }
+    }
+    public void credi()
+    {
+        creditos = true;
+        vent.SetActive(false);
+        this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        creditoss.SetActive(true);
     }
 }
